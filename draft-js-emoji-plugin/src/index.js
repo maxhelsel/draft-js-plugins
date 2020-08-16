@@ -11,6 +11,7 @@ import emojiSuggestionsStrategy from './emojiSuggestionsStrategy';
 import attachImmutableEntitiesToEmojis from './modifiers/attachImmutableEntitiesToEmojis';
 import defaultPositionSuggestions from './utils/positionSuggestions';
 import emojiList from './utils/emojiList';
+import { emojiToDeleteWithColons } from './constants/emojiToDelete.js';
 import { defaultTheme } from './theme.js';
 
 export { defaultTheme };
@@ -89,6 +90,12 @@ export default (config = {}) => {
 
   const cacheBustParam = allowImageCache ? '' : defaultCacheBustParam;
 
+  const modifiedEmojiList = emojiList.list;
+
+  emojiToDeleteWithColons.forEach((name) => {
+    delete modifiedEmojiList[name];
+  });
+
   // if priorityList is configured in config then set priorityList
   if (priorityList) emojiList.setPriorityList(priorityList);
   const suggestionsProps = {
@@ -100,7 +107,7 @@ export default (config = {}) => {
     theme,
     store,
     positionSuggestions,
-    shortNames: List(keys(emojiList.list)),
+    shortNames: List(keys(modifiedEmojiList)),
     useNativeArt,
   };
   const selectProps = {

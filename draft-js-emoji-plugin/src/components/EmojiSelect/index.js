@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import strategy from 'emojione/emoji.json';
 import createEmojisFromStrategy from '../../utils/createEmojisFromStrategy';
 import defaultEmojiGroups from '../../constants/defaultEmojiGroups';
+import emojiToDelete from '../../constants/emojiToDelete.js';
 import Popover from './Popover';
+
+emojiToDelete.forEach((name) => {
+  delete strategy[name];
+});
 
 const emojis = createEmojisFromStrategy(strategy);
 
@@ -89,6 +94,7 @@ export default class EmojiSelect extends Component {
       selectButtonContent,
       toneSelectOpenDelay,
       useNativeArt,
+      iconButton
     } = this.props;
     const buttonClassName = this.state.isOpen
       ? theme.emojiSelectButtonPressed
@@ -101,7 +107,7 @@ export default class EmojiSelect extends Component {
           onMouseUp={this.onButtonMouseUp}
           type="button"
         >
-          {selectButtonContent}
+          {iconButton ? iconButton : selectButtonContent}
         </button>
         <Popover
           cacheBustParam={cacheBustParam}
